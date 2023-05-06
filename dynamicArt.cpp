@@ -3,6 +3,8 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <nlohmann/json.hpp>
+
 
 #include "httplib.h"
 #include "dynamicArtDB.h"
@@ -10,6 +12,7 @@
 
 using namespace httplib;
 using namespace std;
+using json = nlohmann::json;
 
 const int port = 5005;
 
