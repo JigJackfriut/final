@@ -1,6 +1,6 @@
-const baseUrl = 'http://3.15.139.27:5005';
+const baseUrl = 'http://54.198.38.17:5005';
 const url = baseUrl + '/dynamicArt/getEmotionPercentages/';
-
+const artid= 'StockArt';
 window.onload = function() {
   const canvas = document.getElementById('word-cloud');
   canvas.width = window.innerWidth;
@@ -37,9 +37,11 @@ window.onload = function() {
 };
 
 async function fetchData() {
-  const response = await fetch(url);
+  
+  const response = await fetch(url+artid);
   const data = await response.json();
   return data;
+ 
 }
 
 
