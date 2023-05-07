@@ -63,5 +63,7 @@ void dynamicArtDB::getEmotionCount(std::string emotion) {
 
     // emotionPercentages now contains the percentage of responses for each emotion
     // You can return it or use it as needed for the word cloud
+  return emotionPercentages;
+      
 }
 
