@@ -20,17 +20,18 @@ dynamicArtDB obj; // Create a global instance of the dynamicArtDB class
 
 int main() {
     httplib::Server svr;
-std::vector<std::string> emotions = {"Happiness", "Sadness", "Fear", "Disgust", "Anger", "Surprise"};
 
-  svr.Get(R"(/dynamicArt/getEmotionPercentages/)", [&](const Request& req, Response& res) {
+  svr.Get(R"(/dynamicArt/getEmotionPercentages/(.*))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
+     string username = req.matches[1];
+
     dynamicArtDB dDB;
     json result;
 
-    for (const auto& e : emotions) {
-           int count = dDB.getEmotionCount(e);
-           result[e] = count;
-    }
+ 
+        result = dDB.getEmotionCount(username);
+         
+  
    res.set_content(result.dump(), "application/json");
 });
 
