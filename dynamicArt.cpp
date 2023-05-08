@@ -29,7 +29,7 @@ int main() {
     json result;
 
  
-        result = dDB.getEmotionCount(username);
+        result = dDB.getEmotionCount();
          
   
    res.set_content(result.dump(), "application/json");
