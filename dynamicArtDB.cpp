@@ -34,7 +34,7 @@ dynamicArtDB::dynamicArtDB() {
 }
 
 // Calculates percentage of emotions 
-void dynamicArtDB::getEmotionCount(std::string emotion) {
+void dynamicArtDB::getEmotionCount() {
     if (!conn) {
         cerr << "Invalid database connection" << endl;
         exit(EXIT_FAILURE);
