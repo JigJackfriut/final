@@ -35,7 +35,6 @@ int main() {
    res.set_content(result.dump(), "application/json");
 });
 
-    svr.listen("localhost", 8080);
-
+svr.listen("0.0.0.0", port);
     return 0;
 }
