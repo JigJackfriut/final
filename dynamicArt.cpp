@@ -21,9 +21,9 @@ dynamicArtDB obj; // Create a global instance of the dynamicArtDB class
 int main() {
     httplib::Server svr;
 
-  svr.Get(R"(/dynamicArt/getEmotionPercentages/(.*))", [&](const Request& req, Response& res) {
+  svr.Get(R"(/dynamicArt/getEmotionPercentages/)", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
-     string username = req.matches[1];
+
 
     dynamicArtDB dDB;
     json result;
