@@ -1,48 +1,103 @@
-const baseUrl = 'http://54.198.38.17:5005';
+const baseUrl = 'http://3.15.139.27';
 const url = baseUrl + '/dynamicArt/getEmotionPercentages/';
-const artid= 'StockArt';
+
+const colr = {
+  "happy": "yellow",
+  "surprised": "pink",
+  "disgust": "green",
+  "fear": "dark red",
+  "excited": "blue",
+  "calm": "white"
+};
+
 window.onload = function() {
   const canvas = document.getElementById('word-cloud');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
 
-  if (canvas.getContext) {
-    const ctx = canvas.getContext('2d');
+  function check() {
+    fetchData().then((emotionData) => {
+      const word_attr = createWordData(emotionData);
+      animation(word_attr);
+    });
+  }
 
-    setInterval(() => {
-      fetchData().then(emotionData => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+  function animation(word_attr) {
+    for (let i = 0; i < word_attr.length; i++) {
+      const word = word_attr[i];
+      ctx.font = word.font;
+      ctx.fillStyle = word.color;
+      ctx.fillText(word.text, word.x, word.y);
+      word.width = ctx.measureText(word.text).width;
+      ctx.stroke();
+    }
+    move(word_attr);
+  }
 
-        const words = Object.keys(emotionData);
-        const maxCount = Math.max(...Object.values(emotionData));
-        const minSize = 30;
-        const maxSize = 80;
-        const height = canvas.height / (words.length + 1);
-        const fontSizeFactor = (maxSize - minSize) / maxCount;
+  function move(word_attr) {
+    for (let i = 0; i < word_attr.length; i++) {
+      const word = word_attr[i];
+      if (word.x > w) {
+        word.x = -word.width;
+        word.y = Math.random() * h;
+      } else {
+        word.x += word.speed;
+      }
+    }
+  }
 
-        for (let i = 0; i < words.length; i++) {
-          const word = words[i];
-          const count = emotionData[word];
-          let size = minSize + count * fontSizeFactor;
-          let x = canvas.width / 2;
-          let y = (i + 1) * height;
-          ctx.font = `${size}px Arial`;
-          ctx.fillStyle = getRandomColor();
-          ctx.textAlign = 'center';
-          ctx.fillText(word, x, y);
+  setInterval(function() {
+    ctx.clearRect(0, 0, w, h);
+    check();
+  }, 3000);
+
+  function createWordData(emotionData) {
+    const words = [];
+    for (const emotion in emotionData) {
+      const count = emotionData[emotion];
+      for (let i = 0; i < count; i++) {
+        const word = criteria(emotion);
+        if (!overlapping(word.x, word.y, word.width, words)) {
+          words.push(word);
         }
-      });
-    }, 1000);
+      }
+    }
+    return words;
+  }
+
+  function criteria(key) {
+    const word = {};
+    word.text = key;
+    word.x = Math.random() * w;
+    word.y = Math.random() * h;
+    word.font = emotionData[key] * 5 + 'px Arial';
+    word.speed = emotionData[key] / 10;
+    word.color = colr[key];
+    word.width = 0;
+    return word;
+  }
+
+  function overlapping(x, y, size, placedWords) {
+    for (let i = 0; i < placedWords.length; i++) {
+      const word = placedWords[i];
+      const distance = Math.sqrt((x - word.x) ** 2 + (y - word.y) ** 2);
+      if (distance < (size + word.width) / 2) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 
 async function fetchData() {
-  
-  const response = await fetch(url+artid);
+  const response = await fetch(url);
   const data = await response.json();
   return data;
- 
 }
+
 
 
 
