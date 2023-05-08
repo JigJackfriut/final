@@ -2,12 +2,12 @@ const baseUrl = 'http://3.15.139.27';
 const url = baseUrl + '/dynamicArt/getEmotionPercentages/';
 
 const colr = {
-  "happy": "yellow",
-  "surprised": "pink",
-  "disgust": "green",
-  "fear": "dark red",
-  "excited": "blue",
-  "calm": "white"
+  "Happiness": "yellow",
+  "Suprise": "pink",
+  "Disgust": "green",
+  "Fear": "purple",
+  "Sadness": "blue",
+  "Anger": "red"
 };
 
 window.onload = function() {
