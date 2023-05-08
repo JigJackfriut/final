@@ -34,21 +34,23 @@ dynamicArtDB::dynamicArtDB() {
 }
 
 map<string, int> dynamicArtDB::getEmotionCount() {
-    std::map<std::string, int> emotionCounts;
+    map<string, int> emotionCounts;
 
-// List of emotions to count
-std::vector<std::string> emotions = {"Happiness", "Fear", "Sadness", "Anger"};
+    // List of emotions to count
+    vector<string> emotions = {"Happiness", "Fear", "Sadness", "Anger"};
 
-// Iterate over the list of emotions and count each one
-for (const auto& emotion : emotions) {
-    std::string query = "SELECT COUNT(*) AS count FROM my_table WHERE emotions = ?";
-    sql::PreparedStatement *stmt = conn->prepareStatement(query);
-    stmt->setString(1, emotion);
-    sql::ResultSet *res = stmt->executeQuery();
-    if (res->next()) {
-        int count = res->getInt("count");
-        emotionCounts[emotion] = count;
+    // Iterate over the list of emotions and count each one
+    for (const auto& emotion : emotions) {
+        string query = "SELECT COUNT(*) AS count FROM responses WHERE emotion = ?";
+        sql::PreparedStatement *stmt = conn->prepareStatement(query);
+        stmt->setString(1, emotion);
+        sql::ResultSet *res = stmt->executeQuery();
+        if (res->next()) {
+            int count = res->getInt("count");
+            emotionCounts[emotion] = count;
+        }
     }
+
+    return emotionCounts;
 }
-  return emotionCounts;
-}
+
