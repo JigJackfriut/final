@@ -60,11 +60,12 @@ window.onload = function() {
     }, 24);
 
     function createWordData(emotionData) {
+       const total = Object.values(emotionData).reduce((acc, val) => acc + val);
       const words = [];
       for (const emotion in emotionData) {
         const count = emotionData[emotion];
         for (let i = 0; i < count; i++) {
-          const word = criteria(emotion);
+          const word = criteria(emotion, total);
           if (!overlapping(word.x, word.y, word.width, words)) {
             words.push(word);
           }
@@ -73,13 +74,14 @@ window.onload = function() {
       return words;
     }
 
-    function criteria(key) {
+    function criteria(key,total) {
       const word = {};
       word.text = key;
       word.x = Math.random() * w;
       word.y = Math.random() * h;
-      word.font = emotionData[key] *5+ 'px Arial';
-      word.speed = emotionData[key] /2;
+      const percentage = emotionData[key]/ total;
+      const count = Math.round(percentage * 100);
+      word.font = count * 2+ 'px Arial';
       word.color = colr[key];
       word.width = 0;
       return word;
