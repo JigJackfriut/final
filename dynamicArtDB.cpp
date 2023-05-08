@@ -5,6 +5,7 @@
 #include "dynamicArtInfo.h"
 
 
+
 dynamicArtDB::dynamicArtDB() {
         // Instantiate Driver
         driver = sql::mariadb::get_driver_instance();
@@ -33,8 +34,10 @@ dynamicArtDB::dynamicArtDB() {
 
 }
 
+
 map<string, int> dynamicArtDB::getEmotionCount() {
-    map<string, int> emotionCounts;
+   int tot=0;    
+  map<string, int> emotionCounts;
 
     // List of emotions to count
     vector<string> emotions = {"Happiness", "Fear", "Sadness", "Anger"};
@@ -51,6 +54,8 @@ map<string, int> dynamicArtDB::getEmotionCount() {
         }
     }
 
-    return emotionCounts;
-}
 
+
+
+      return emotionCounts;
+}
